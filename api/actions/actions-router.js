@@ -46,7 +46,31 @@ router.post('/', mw.checkActionBody, (req,res)=>{
 
 
 // //- `[PUT] `/:id` returns the updated action as the body of the _response_.
-// router.put('/:id', mw.checkActionId, (req,res)=>{})
+router.put('/:id', mw.checkActionId, mw.checkActionBody, (req,res)=>{
+    const {id} = req.params
+    const changes = req.body
+    
+    Actions.get(id)
+    .then(userFound=>{
+        if(!userFound){
+            res.status(404).json({message: "the user you are trying to update was not found"})
+        }
+        else{
+            return Actions.update(id,changes)
+        }
+    })
+    .then(data=>{
+        if(data){
+            return Actions.get(id)
+        }
+    })
+    .then(actions=>{
+        res.status(200).json(actions)
+    })
+    .catch(()=>{
+        res.status(500).json({message: "Error updating the action."})
+    })
+})
 // //- `[DELETE] `/:id` returns no _response_ body.
 // router.delete('/:id', mw.checkActionId,(req,res)=>{})
 
