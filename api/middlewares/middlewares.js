@@ -17,8 +17,16 @@ const checkActionBody = (req,res,next)=>{
         next()
     }
 }
+const checkProjectsBody = (req,res,next)=>{
+    if(!req.body.description || !req.body.name){
+        res.status(400).json({message: "Must include project_id, description and notes to add new action."})
+    }else{
+        next()
+    }
+}
 
 module.exports={
     checkActionId,
-    checkActionBody
+    checkActionBody,
+    checkProjectsBody
 }
