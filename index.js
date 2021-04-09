@@ -1,3 +1,11 @@
+const server = require('./api/server.js')
+
+server.listen(7000, ()=>{
+    console.log("listening on port 7000.")
+})
+
+
+
 /*
 play this: https://www.youtube.com/watch?v=d-diB65scQU
 
