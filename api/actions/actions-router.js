@@ -20,7 +20,7 @@ router.get('/', (req,res)=>{
 
 
 //- `[GET] `/:id` returns an action with the given `id` as the body of the _response_.
-router.get('/:id', mw.checkActionId, (req,res)=>{
+router.get('/:id', mw.validateId, (req,res)=>{
     const {id}= req.params
     Actions.get(id)
     .then(action=>{
@@ -46,13 +46,13 @@ router.post('/', mw.checkActionBody, (req,res)=>{
 
 
 // //- `[PUT] `/:id` returns the updated action as the body of the _response_.
-router.put('/:id', mw.checkActionId, mw.checkActionBody, (req,res)=>{
+router.put('/:id', mw.validateId, mw.checkActionBody, (req,res)=>{
     const {id} = req.params
     const changes = req.body
     Actions.get(id)
     .then(userFound=>{
         if(!userFound){
-            res.status(404).json({message: "the user you are trying to update was not found"})
+            res.status(404).json({message: "the action you are trying to update was not found"})
         }
         else{
             return Actions.update(id,changes)
@@ -71,7 +71,7 @@ router.put('/:id', mw.checkActionId, mw.checkActionBody, (req,res)=>{
     })
 })
 // //- `[DELETE] `/:id` returns no _response_ body.
-router.delete('/:id', mw.checkActionId, async (req,res)=>{
+router.delete('/:id', mw.validateId, async (req,res)=>{
     const {id} = req.params
     try{ const action = await Actions.get(id)
         if(!action){

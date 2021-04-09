@@ -1,6 +1,6 @@
 const Actions = require('../actions/actions-model.js')
 
-const checkActionId = async (req,res,next)=>{
+const validateId = async (req,res,next)=>{
     const {id}=req.params
     const action = await Actions.get(id)
     if(!action){
@@ -26,7 +26,7 @@ const checkProjectsBody = (req,res,next)=>{
 }
 
 module.exports={
-    checkActionId,
+    validateId,
     checkActionBody,
     checkProjectsBody
 }
