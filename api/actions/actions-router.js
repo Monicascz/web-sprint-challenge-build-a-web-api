@@ -33,10 +33,21 @@ router.get('/:id', mw.checkActionId, (req,res)=>{
 
 
 //- `[POST] `/` returns the newly created action as the body of the _response_.
-// router.post('/', (req,res)=>{})
+router.post('/', mw.checkActionBody, (req,res)=>{
+    const newAction = req.body
+    Actions.insert(newAction)
+    .then(action=>{
+        res.status(201).json(action)
+    })
+    .catch(()=>{
+        res.status(500).json({message: "Error adding the actions."})
+    })
+})
+
+
 // //- `[PUT] `/:id` returns the updated action as the body of the _response_.
-// router.put('/:id', (req,res)=>{})
+// router.put('/:id', mw.checkActionId, (req,res)=>{})
 // //- `[DELETE] `/:id` returns no _response_ body.
-// router.delete('/:id', (req,res)=>{})
+// router.delete('/:id', mw.checkActionId,(req,res)=>{})
 
 module.exports = router;

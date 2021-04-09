@@ -10,6 +10,15 @@ const checkActionId = async (req,res,next)=>{
     }
 }
 
+const checkActionBody = (req,res,next)=>{
+    if(!req.body.description || !req.body.notes || !req.body.project_id){
+        res.status(400).json({message: "Must include project_id, description and notes to add new action."})
+    }else{
+        next()
+    }
+}
+
 module.exports={
-    checkActionId
+    checkActionId,
+    checkActionBody
 }
