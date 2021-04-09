@@ -49,7 +49,6 @@ router.post('/', mw.checkActionBody, (req,res)=>{
 router.put('/:id', mw.checkActionId, mw.checkActionBody, (req,res)=>{
     const {id} = req.params
     const changes = req.body
-    
     Actions.get(id)
     .then(userFound=>{
         if(!userFound){
@@ -72,6 +71,19 @@ router.put('/:id', mw.checkActionId, mw.checkActionBody, (req,res)=>{
     })
 })
 // //- `[DELETE] `/:id` returns no _response_ body.
-// router.delete('/:id', mw.checkActionId,(req,res)=>{})
+router.delete('/:id', mw.checkActionId, async (req,res)=>{
+    const {id} = req.params
+    try{ const action = await Actions.get(id)
+        if(!action){
+          res.status(404).json({message: "This action does not exist."})
+        }else{
+          await Actions.remove(id)
+          res.json(action)
+        }
+      }catch{
+        res.status(500).json({message: "Error removing the action."})
+      }
+
+})
 
 module.exports = router;
